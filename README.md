@@ -7,5 +7,6 @@ I developed a long-only trading strategy using Dynamic Linear Regression Channel
 
 
 Backtest period: 20 May 2022 to 20 May 2024
+
 FX pairs: EUR/USD, CAD/USD, GBP/USD, JPY/USD, AUD/USD
 
