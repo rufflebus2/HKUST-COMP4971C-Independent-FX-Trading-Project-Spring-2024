@@ -9,9 +9,6 @@ import time
 import vectorbt as vbt
 import datetime as dt
 
-# cd /Users/raphaelbas/Desktop/vscode_workspace/COMP4971C/python_COMP4971C
-# python3 params_and_func.py
-
 # FIXED 
 FEE_TYPE = 0.00002
 
@@ -182,10 +179,10 @@ def LinearRegressionChannel(closing_prices, params):
   # Strategy
   upper_series = pd.Series(L_y, index=index[all_x])
   lower_series = pd.Series(U_y, index=index[all_x])
-  long_entries = crossover(lower_series, close_comp) # crossover(close_comp, pd.Series(L_y, index=index[all_x])) # crossover(pd.Series(L_y, index=index[all_x]), close_comp)
-  long_exits = crossover(close_comp, upper_series) # Change here
-  short_exits = crossover(lower_series, close_comp) # crossover(pd.Series(L_y, index=index[all_x]), close_comp) # Change here
-  short_entries = crossover(close_comp, upper_series) # crossunder(close_comp, pd.Series(U_y, index=index[all_x]))# crossover(close_comp, pd.Series(U_y, index=index[all_x]))
+  long_entries = crossover(lower_series, close_comp) 
+  long_exits = crossover(close_comp, upper_series)
+  short_exits = crossover(lower_series, close_comp)
+  short_entries = crossover(close_comp, upper_series)
   
   if aroon_adj:
     aroonLong = pd.Series(aroonLong, index=index[all_x])
