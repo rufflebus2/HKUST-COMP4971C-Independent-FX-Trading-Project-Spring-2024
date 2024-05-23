@@ -12,9 +12,6 @@ import time
 
 import params_and_func as paf
 
-# cd /Users/raphaelbas/Desktop/vscode_workspace/COMP4971C/python_COMP4971C
-# python3 params.py
-
 # Data download
 # Resolutions: 1/2/5/15/30/60/90m | 1h | 1/5d | 1wk | 1/3mo
 # 1d --> Unlimited probably
@@ -85,20 +82,14 @@ w_list = len(w_range)
 x_list = len(x_range)
 y_list = len(y_range)
 z_list = len(z_range)
-matrix_shape = (x_list, y_list)
-
-# sharpe_matrix = np.zeros(matrix_shape)
-# cagr_matrix = np.zeros(matrix_shape)
-# dd_matrix = np.zeros(matrix_shape)
-# mar_matrix = np.zeros(matrix_shape)
 
 print(f'length of {w_name}: {w_list}, length of {x_name}: {x_list}, length of {y_name}: {y_list}, length of {z_name}: {z_list}')
 df = pd.DataFrame(columns = [w_name, x_name, y_name, z_name, 'CAGR', 'MDD', 'MAR', 'Return'])
 
 start_total = time.time()
 for w in range(w_list):
-    for x in range(x_list): # 24,121,24
-        for y in range(y_list): # 0.5, 2.6, 0.5
+    for x in range(x_list): 
+        for y in range(y_list):
             for z in range(z_list):
                 start_aroon = time.time()
                 print(w,x,y,z)
@@ -110,7 +101,6 @@ for w in range(w_list):
                 req_price, req_sig, spy_price = paf.getCloseAndSigs(data, params)
                 pf = paf.runBacktest(req_sig, req_price, params)
 
-                # sharpe = paf.getSharpe(pf)
                 cagr = paf.getCAGR(pf, len(req_price))
                 mdd = paf.getDD(pf)
                 mar = paf.getMAR(pf, len(req_price))
@@ -118,11 +108,6 @@ for w in range(w_list):
 
                 newrow = pd.DataFrame([{w_name: w_range[w], x_name: x_range[x], y_name: y_range[y], z_name: z_range[z], 'CAGR': cagr, 'MDD': mdd, 'MAR': mar, 'Return': ret}])
                 df = pd.concat([df, newrow], ignore_index=True)
-
-                # sharpe_matrix[x][y] = sharpe
-                # cagr_matrix[x][y] = cagr
-                # dd_matrix[x][y] = mdd
-                # mar_matrix[x][y] = mar
         
                 if mar >=2 or cagr >= 0.15:
                     print(f'{w_name}: {w_range[w]}, {x_name}: {x_range[x]}, {y_name}: {y_range[y]}, {z_name}: {z_range[z]} | mar:{round(mar,3)} | cagr: {round(cagr,5)} | mdd: {round(mdd,5)}')
@@ -131,12 +116,8 @@ for w in range(w_list):
                 print(f'Ending iteration of {z_range[z]} Aroon Lookback: {end_aroon-start_aroon}')
 end_total = time.time()
 print(f'Total time taken: {end_total-start_total}')
-file_name = f'/Users/raphaelbas/Desktop/vscode_workspace/COMP4971C/python_COMP4971C/{ticker}_woAroon.csv'
+file_name = f'/filepath/{ticker}_results.csv'
 df.to_csv(file_name, index=False)
-# paf.plotHM(mar_matrix, lookback_range, sd_mult_range, 'MAR')
-# paf.plotHM(cagr_matrix, lookback_range, sd_mult_range, 'CAGR')
-# paf.plotHM(dd_matrix, lookback_range, sd_mult_range, 'MDD')
-# paf.plotAll(mar_matrix, cagr_matrix, dd_matrix, x_range, y_range)
 
 
             
